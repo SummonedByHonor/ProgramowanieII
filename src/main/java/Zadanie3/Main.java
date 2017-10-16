@@ -18,7 +18,7 @@ public class Main {
 
         List<Contact> listOfContacts = new ArrayList<>();
         listOfContacts.add(new Contact("Mieszko", "Pierwszy", "333-222-111", "mieszko1@gmail.com"));
-        listOfContacts.add(new Contact("Bolesław", "Chrobry","666-124-567", "bolek_chrobry@gmail.com"));
+        listOfContacts.add(new Contact("Bolesław", "Chrobry", "666-124-567", "bolek_chrobry@gmail.com"));
         listOfContacts.add(new Contact("Kazimierz", "Wielki", "990-123-456", "kazikwielki@gmail.com"));
 
         try {
@@ -39,27 +39,64 @@ public class Main {
         System.out.println("3. Wyjdź z programu");
         Integer chosenNumber = scanner.nextInt();
 
-        switch (chosenNumber){
+        switch (chosenNumber) {
             case 1: {
                 System.out.println("Wybierz rodzaj wyszukiwania:");
                 System.out.println("A. Po imieniu");
                 System.out.println("B. Po numerze telefonu");
                 System.out.println("C. Po adresie email");
+                System.out.println("D. Wstecz");
 
-                String chosenLetter = scanner.next();
-                switch (chosenLetter){
+                String chosenLetter = scanner.next().toUpperCase();
+                switch (chosenLetter) {
                     case "A": {
                         System.out.println("Podaj imię:");
                         String nameForSearch = scanner.next();
                         List<Contact> loadedListOfContacts = null;
                         try {
-                            loadedListOfContacts = mapper.readValue(new File("D:\\Java\\Projekty\\ProgramowanieII\\src\\main\\resources\\contacts.json"), new TypeReference<List<Contact>>(){});
+                            loadedListOfContacts = mapper.readValue(new File("D:\\Java\\Projekty\\ProgramowanieII\\src\\main\\resources\\contacts.json"), new TypeReference<List<Contact>>() {
+                            });
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        for (Contact contact : loadedListOfContacts){
-                            if (contact.getName().equals(nameForSearch)){
+                        for (Contact contact : loadedListOfContacts) {
+                            if (contact.getName().equalsIgnoreCase(nameForSearch)) {
                                 System.out.println(contact.toString());
+                            }
+                        }
+                    }
+                    case "B": {
+                        System.out.println("Podaj numer telefonu");
+                        String phoneNumberForSearch = scanner.next();
+                        List<Contact> loadedListOfContacts = null;
+                        try {
+                            loadedListOfContacts = mapper.readValue(new File("D:\\Java\\Projekty\\ProgramowanieII\\src\\main\\resources\\contacts.json"), new TypeReference<List<Contact>>() {
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        for (Contact contact : loadedListOfContacts) {
+                            if (contact.getTelephoneNumber().equals(phoneNumberForSearch)) {
+                                System.out.println(contact.toString());
+                            }
+                        }
+                    }
+                    case "C": {
+                        System.out.println("Podaj adres email");
+                        List<Contact> loadedListOfContacts = null;
+                        String emailForSearch = scanner.next();
+                        if (!emailForSearch.contains("@")){
+                            System.out.println("Niepoprawny adres email. Błąd.");
+                        }else{
+                            try {
+                                loadedListOfContacts = mapper.readValue(new File("D:\\Java\\Projekty\\ProgramowanieII\\src\\main\\resources\\contacts.json"), new TypeReference<List<Contact>>(){});
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            for (Contact contact : loadedListOfContacts){
+                                if (contact.getEmail().equals(emailForSearch)){
+                                    System.out.println(contact);
+                                }
                             }
                         }
                     }
